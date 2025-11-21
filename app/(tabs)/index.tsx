@@ -1,9 +1,14 @@
-import { StyleSheet, TextInput, View } from "react-native";
+import { createFile } from "@/service";
+import { useState } from "react";
+import { Button, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const HEADER_HEIGHT = 250;
 
 export default function HomeScreen() {
+  const [fileName, setFileName] = useState<string>("");
+  const [content, setContent] = useState<string>("default");
+
   return (
     // <ParallaxScrollView
     //   headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -126,6 +131,9 @@ export default function HomeScreen() {
             color: "#ccc",
             borderColor: "#ccc",
           }}
+          onChange={(e) => {
+            setFileName(e.nativeEvent.text);
+          }}
         />
       </View>
 
@@ -136,30 +144,34 @@ export default function HomeScreen() {
           style={{
             borderWidth: 0.2,
             padding: 10,
-            fontSize: 22,
+            fontSize: 16,
             color: "#ccc",
           }}
+          onChange={(e) => {
+            setContent(e.nativeEvent.text);
+          }}
+        />
+      </View>
+
+      <View
+        style={{
+          padding: 20,
+          paddingBlockEnd: 20,
+          paddingEnd: 20,
+          flex: 1,
+          // alignItems: "baseline",
+          justifyContent: "flex-end",
+          alignItems: "flex-end",
+        }}
+      >
+        <Button
+          title="Save"
+          onPress={
+            () => createFile(fileName, content)
+            // console.log(fileLists())
+          }
         />
       </View>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  // titleContainer: {
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  //   gap: 8,
-  // },
-  // stepContainer: {
-  //   gap: 8,
-  //   marginBottom: 8,
-  // },
-  // reactLogo: {
-  //   height: 178,
-  //   width: 290,
-  //   bottom: 0,
-  //   left: 0,
-  //   position: "absolute",
-  // },
-});
