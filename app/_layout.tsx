@@ -19,6 +19,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
+        <Stack.Screen name="modal" options={{ headerShown: false }} />
         <Stack.Screen
           name="(tabs)"
           options={{
@@ -27,7 +28,6 @@ export default function RootLayout() {
             presentation: "pageSheet",
           }}
         />
-        <Stack.Screen name="modal" options={{ headerShown: false }} />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>

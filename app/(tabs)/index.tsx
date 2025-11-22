@@ -1,177 +1,210 @@
-import { createFile } from "@/service";
-import { useState } from "react";
-import { Button, TextInput, View } from "react-native";
+import { ThemedText } from "@/components/themed-text";
+import { deleteFile, fileLists } from "@/service";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { TouchableOpacity, View, StyleSheet, ActivityIndicator } from "react-native";
+import Animated from "react-native-reanimated";
+import { Colors } from "@/constants/theme";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const HEADER_HEIGHT = 250;
-
 export default function HomeScreen() {
-  const [fileName, setFileName] = useState<string>("");
-  const [content, setContent] = useState<string>("default");
+  const [filesName, setFilesName] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const colorScheme = useColorScheme() ?? 'light';
+  const colors = Colors[colorScheme];
+
+  const getFiles = async () => {
+    setLoading(true);
+    try {
+      const files = await fileLists();
+
+      if (files.success) {
+        console.log(files.data);
+        setFilesName(files.data);
+      } else {
+        console.error(files.error);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getFiles();
+  }, []);
 
   return (
-    // <ParallaxScrollView
-    //   headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-    //   headerImage={
-    //     <Image
-    //       source={require('@/assets/images/partial-react-logo.png')}
-    //       style={styles.reactLogo}
-    //     />
-    //   }>
-    //   <ThemedView style={styles.titleContainer}>
-    //     <ThemedText type="title">Welcome!</ThemedText>
-    //     <HelloWave />
-    //   </ThemedView>
-    //   <ThemedView style={styles.stepContainer}>
-    //     <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-    //     <ThemedText>
-    //       Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-    //       Press{' '}
-    //       <ThemedText type="defaultSemiBold">
-    //         {Platform.select({
-    //           ios: 'cmd + d',
-    //           android: 'cmd + m',
-    //           web: 'F12',
-    //         })}
-    //       </ThemedText>{' '}
-    //       to open developer tools.
-    //     </ThemedText>
-    //   </ThemedView>
-    //   <ThemedView style={styles.stepContainer}>
-    //     <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-    //     <ThemedText>
-    //       Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-    //       Press{' '}
-    //       <ThemedText type="defaultSemiBold">
-    //         {Platform.select({
-    //           ios: 'cmd + d',
-    //           android: 'cmd + m',
-    //           web: 'F12',
-    //         })}
-    //       </ThemedText>{' '}
-    //       to open developer tools.
-    //     </ThemedText>
-    //   </ThemedView>
-    //   <ThemedView style={styles.stepContainer}>
-    //     <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-    //     <ThemedText>
-    //       Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-    //       Press{' '}
-    //       <ThemedText type="defaultSemiBold">
-    //         {Platform.select({
-    //           ios: 'cmd + d',
-    //           android: 'cmd + m',
-    //           web: 'F12',
-    //         })}
-    //       </ThemedText>{' '}
-    //       to open developer tools.
-    //     </ThemedText>
-    //   </ThemedView>
-    //   <ThemedView style={styles.stepContainer}>
-    //     <Link href="/modal">
-    //       <Link.Trigger>
-    //         <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-    //       </Link.Trigger>
-    //       <Link.Preview />
-    //       <Link.Menu>
-    //         <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-    //         <Link.MenuAction
-    //           title="Share"
-    //           icon="square.and.arrow.up"
-    //           onPress={() => alert('Share pressed')}
-    //         />
-    //         <Link.Menu title="More" icon="ellipsis">
-    //           <Link.MenuAction
-    //             title="Delete"
-    //             icon="trash"
-    //             destructive
-    //             onPress={() => alert('Delete pressed')}
-    //           />
-    //         </Link.Menu>
-    //       </Link.Menu>
-    //     </Link>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+      {!loading && (
+        <View style={styles.content}>
+          <View style={styles.header}>
+            <ThemedText type="title" style={styles.title}>
+              Note Lists
+            </ThemedText>
 
-    //     <ThemedText>
-    //       {`Tap the Explore tab to learn more about what's included in this starter app.`}
-    //     </ThemedText>
-    //   </ThemedView>
-    //   <ThemedView style={styles.stepContainer}>
-    //     <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-    //     <ThemedText>
-    //       {`When you're ready, run `}
-    //       <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-    //       <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-    //       <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-    //       <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-    //     </ThemedText>
-    //   </ThemedView>
-    // </ParallaxScrollView>
+            <TouchableOpacity
+              style={[styles.reloadButton, { backgroundColor: colors.tint }]}
+              onPress={getFiles}
+            >
+              <ThemedText style={styles.reloadButtonText}>Reload</ThemedText>
+            </TouchableOpacity>
+          </View>
 
-    // <SafeAreaView style={{ flex: 1 }}>
-    //   <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    //     <TextInput
-    //       placeholder="Title"
-    //       placeholderTextColor={"oklch(55.4% 0.046 257.417)"}
-    //     />
-    //     sourav
-    //   </View>
-    // </SafeAreaView>
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ padding: 20 }}>
-        <TextInput
-          placeholder="Title"
-          placeholderTextColor={"#999"}
-          style={{
-            borderWidth: 0.2,
-            // borderBlockColor: "#ccc",
-            padding: 10,
-            fontSize: 22,
-            height: 40,
-            width: 120,
-            color: "#ccc",
-            borderColor: "#ccc",
-          }}
-          onChange={(e) => {
-            setFileName(e.nativeEvent.text);
-          }}
-        />
-      </View>
+          <Animated.ScrollView style={styles.scrollView} scrollEventThrottle={6}>
+            {filesName.length === 0 ? (
+              <View style={styles.emptyState}>
+                <ThemedText style={styles.emptyText}>No notes yet. Create your first note!</ThemedText>
+              </View>
+            ) : (
+              filesName.map((fileName) => (
+                <View
+                  key={fileName}
+                  style={[
+                    styles.listItem,
+                    {
+                      backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f8f8f8',
+                      borderColor: colorScheme === 'dark' ? '#333' : '#e0e0e0',
+                    },
+                  ]}
+                >
+                  <View style={styles.fileNameContainer}>
+                    <ThemedText type="defaultSemiBold" style={styles.fileName}>
+                      {fileName}
+                    </ThemedText>
+                  </View>
+                  <View style={styles.buttonGroup}>
+                    <TouchableOpacity
+                      style={[styles.actionButton, styles.showButton]}
+                      onPress={() => {
+                        router.push(`/notes?fileName=${fileName.split(".")[0]}`);
+                      }}
+                    >
+                      <ThemedText style={styles.showButtonText}>View</ThemedText>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[styles.actionButton, styles.deleteButton]}
+                      onPress={() => {
+                        deleteFile(fileName.split(".")[0]);
+                        getFiles();
+                      }}
+                    >
+                      <ThemedText style={styles.deleteButtonText}>Delete</ThemedText>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ))
+            )}
+          </Animated.ScrollView>
+        </View>
+      )}
 
-      <View style={{ padding: 20, flex: 1 }}>
-        <TextInput
-          placeholder="text field"
-          placeholderTextColor={"#999"}
-          style={{
-            borderWidth: 0.2,
-            padding: 10,
-            fontSize: 16,
-            color: "#ccc",
-          }}
-          onChange={(e) => {
-            setContent(e.nativeEvent.text);
-          }}
-        />
-      </View>
-
-      <View
-        style={{
-          padding: 20,
-          paddingBlockEnd: 20,
-          paddingEnd: 20,
-          flex: 1,
-          // alignItems: "baseline",
-          justifyContent: "flex-end",
-          alignItems: "flex-end",
-        }}
-      >
-        <Button
-          title="Save"
-          onPress={
-            () => createFile(fileName, content)
-            // console.log(fileLists())
-          }
-        />
-      </View>
+      {loading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={colors.tint} />
+          <ThemedText type="defaultSemiBold" style={styles.loadingText}>
+            Loading...
+          </ThemedText>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+  },
+  header: {
+    padding: 20,
+    paddingBottom: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+  },
+  reloadButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  reloadButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  scrollView: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+  emptyState: {
+    padding: 40,
+    alignItems: 'center',
+  },
+  emptyText: {
+    fontSize: 16,
+    opacity: 0.6,
+    textAlign: 'center',
+  },
+  listItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    marginBottom: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  fileNameContainer: {
+    flex: 1,
+    marginRight: 12,
+  },
+  fileName: {
+    fontSize: 16,
+  },
+  buttonGroup: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  actionButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 6,
+    minWidth: 70,
+    alignItems: 'center',
+  },
+  showButton: {
+    backgroundColor: '#0a7ea4',
+  },
+  showButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  deleteButton: {
+    backgroundColor: '#dc3545',
+  },
+  deleteButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 12,
+    fontSize: 16,
+  },
+});

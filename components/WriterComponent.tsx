@@ -1,74 +1,120 @@
-import React from "react";
-
-import { createFile } from "@/service";
-import { Button, TextInput, View } from "react-native";
+import { TextInput, View, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { ThemedText } from "./themed-text";
+import { Colors } from "@/constants/theme";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 
 interface Props {
   fileName: string;
-  setFileName: () => void;
+  setFileName: (value: React.SetStateAction<string>) => void;
   content: string;
-  setContent: () => void;
+  setContent: (value: React.SetStateAction<string>) => void;
+  handler: (fileName: string, content: string) => void;
 }
 
-export default function WriterComponent() {
+export default function WriterComponent(props: Props) {
+  const colorScheme = useColorScheme() ?? 'light';
+  const colors = Colors[colorScheme];
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ padding: 20 }}>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.titleContainer}>
         <TextInput
-          placeholder="Title"
+          value={props.fileName}
+          placeholder="Enter note title..."
           placeholderTextColor={"#999"}
-          style={{
-            borderWidth: 0.2,
-            // borderBlockColor: "#ccc",
-            padding: 10,
-            fontSize: 22,
-            height: 40,
-            width: 120,
-            color: "#ccc",
-            borderColor: "#ccc",
-          }}
+          style={[
+            styles.titleInput,
+            {
+              color: colors.text,
+              borderColor: colorScheme === 'dark' ? '#444' : '#ddd',
+              backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f8f8f8',
+            },
+          ]}
           onChange={(e) => {
-            setFileName(e.nativeEvent.text);
+            props.setFileName(e.nativeEvent.text);
           }}
         />
       </View>
 
-      <View style={{ padding: 20, flex: 1 }}>
+      <View style={styles.contentContainer}>
         <TextInput
-          placeholder="text field"
+          value={props.content}
+          multiline={true}
+          textAlignVertical="top"
+          placeholder="Start writing your note..."
           placeholderTextColor={"#999"}
-          style={{
-            borderWidth: 0.2,
-            padding: 10,
-            fontSize: 16,
-            color: "#ccc",
-          }}
+          style={[
+            styles.contentInput,
+            {
+              color: colors.text,
+              borderColor: colorScheme === 'dark' ? '#444' : '#ddd',
+              backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f8f8f8',
+            },
+          ]}
           onChange={(e) => {
-            setContent(e.nativeEvent.text);
+            props.setContent(e.nativeEvent.text);
           }}
         />
       </View>
 
-      <View
-        style={{
-          padding: 20,
-          paddingBlockEnd: 20,
-          paddingEnd: 20,
-          flex: 1,
-          // alignItems: "baseline",
-          justifyContent: "flex-end",
-          alignItems: "flex-end",
-        }}
-      >
-        <Button
-          title="Save"
-          onPress={
-            () => createFile(fileName, content)
-            // console.log(fileLists())
-          }
-        />
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={[styles.saveButton, { backgroundColor: colors.tint }]}
+          onPress={() => {
+            props.handler(props.fileName, props.content);
+          }}
+        >
+          <ThemedText style={styles.saveButtonText}>Save Note</ThemedText>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  titleContainer: {
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    paddingBottom: 12,
+  },
+  titleInput: {
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 14,
+    fontSize: 20,
+    fontWeight: '600',
+  },
+  contentContainer: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingBottom: 12,
+  },
+  contentInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 14,
+    fontSize: 16,
+    minHeight: 300,
+  },
+  buttonContainer: {
+    padding: 20,
+    alignItems: 'center',
+  },
+  saveButton: {
+    paddingHorizontal: 40,
+    paddingVertical: 14,
+    borderRadius: 10,
+    minWidth: 200,
+    alignItems: 'center',
+  },
+  saveButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});
