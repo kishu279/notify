@@ -1,8 +1,16 @@
-# Welcome to your Expo app 👋
+# Notify - Note Taking App 📝
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A simple and elegant note-taking application built with [Expo](https://expo.dev) and React Native.
 
-## Get started
+## Features
+
+- ✨ Create and edit notes
+- 📱 Clean, modern UI with dark mode support
+- 💾 Local file storage
+- 🔄 Real-time updates
+- 🗑️ Delete notes easily
+
+## Get Started
 
 1. Install dependencies
 
@@ -10,11 +18,15 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
    npm install
    ```
 
-2. Start the app
+2. Start the app with tunnel
 
    ```bash
-   npx expo start
+   npx expo start --clear --tunnel
    ```
+
+   This command starts the development server with:
+   - `--clear`: Clears the bundler cache
+   - `--tunnel`: Creates a tunnel for remote testing on physical devices
 
 In the output, you'll find options to open the app in a
 
@@ -22,6 +34,41 @@ In the output, you'll find options to open the app in a
 - [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+
+## Project Structure
+
+```
+notify/
+├── app/                          # Main application directory (file-based routing)
+│   ├── _layout.tsx              # Root layout component
+│   ├── modal.tsx                # Welcome/intro modal screen
+│   └── (tabs)/                  # Tab-based navigation
+│       ├── _layout.tsx          # Tab layout configuration
+│       ├── index.tsx            # Home screen - displays note list
+│       └── notes.tsx            # Note editor screen
+├── assets/                       # Static assets
+│   └── images/                  # Image files
+├── components/                   # Reusable React components
+│   ├── WriterComponent.tsx      # Note writing/editing component
+│   ├── themed-text.tsx          # Themed text component
+│   ├── themed-view.tsx          # Themed view component
+│   └── ui/                      # UI components
+│       ├── collapsible.tsx
+│       ├── icon-symbol.tsx
+│       └── icon-symbol.ios.tsx
+├── constants/                    # App constants
+│   └── theme.ts                 # Theme colors and fonts
+├── hooks/                        # Custom React hooks
+│   ├── use-color-scheme.ts      # Color scheme hook
+│   ├── use-color-scheme.web.ts  # Web-specific color scheme
+│   └── use-theme-color.ts       # Theme color hook
+├── scripts/                      # Utility scripts
+│   └── reset-project.js         # Project reset script
+├── service.ts                    # File system service functions
+├── app.json                      # Expo configuration
+├── package.json                  # Dependencies and scripts
+└── tsconfig.json                # TypeScript configuration
+```
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
