@@ -1,18 +1,23 @@
 import { ThemedText } from "@/components/themed-text";
+import { Colors } from "@/constants/theme";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 import { deleteFile, fileLists } from "@/service";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { TouchableOpacity, View, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Animated from "react-native-reanimated";
-import { Colors } from "@/constants/theme";
-import { useColorScheme } from "@/hooks/use-color-scheme";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   const [filesName, setFilesName] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const colorScheme = useColorScheme() ?? 'light';
+  const colorScheme = useColorScheme() ?? "light";
   const colors = Colors[colorScheme];
 
   const getFiles = async () => {
@@ -38,7 +43,9 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
       {!loading && (
         <View style={styles.content}>
           <View style={styles.header}>
@@ -54,10 +61,15 @@ export default function HomeScreen() {
             </TouchableOpacity>
           </View>
 
-          <Animated.ScrollView style={styles.scrollView} scrollEventThrottle={6}>
+          <Animated.ScrollView
+            style={styles.scrollView}
+            scrollEventThrottle={6}
+          >
             {filesName.length === 0 ? (
               <View style={styles.emptyState}>
-                <ThemedText style={styles.emptyText}>No notes yet. Create your first note!</ThemedText>
+                <ThemedText style={styles.emptyText}>
+                  No notes yet. Create your first note!
+                </ThemedText>
               </View>
             ) : (
               filesName.map((fileName) => (
@@ -66,8 +78,9 @@ export default function HomeScreen() {
                   style={[
                     styles.listItem,
                     {
-                      backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f8f8f8',
-                      borderColor: colorScheme === 'dark' ? '#333' : '#e0e0e0',
+                      backgroundColor:
+                        colorScheme === "dark" ? "#1f1f1f" : "#f8f8f8",
+                      borderColor: colorScheme === "dark" ? "#333" : "#e0e0e0",
                     },
                   ]}
                 >
@@ -80,10 +93,14 @@ export default function HomeScreen() {
                     <TouchableOpacity
                       style={[styles.actionButton, styles.showButton]}
                       onPress={() => {
-                        router.push(`/notes?fileName=${fileName.split(".")[0]}`);
+                        router.push(
+                          `/notes?fileName=${fileName.split(".")[0]}`
+                        );
                       }}
                     >
-                      <ThemedText style={styles.showButtonText}>View</ThemedText>
+                      <ThemedText style={styles.showButtonText}>
+                        View
+                      </ThemedText>
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={[styles.actionButton, styles.deleteButton]}
@@ -92,7 +109,9 @@ export default function HomeScreen() {
                         getFiles();
                       }}
                     >
-                      <ThemedText style={styles.deleteButtonText}>Delete</ThemedText>
+                      <ThemedText style={styles.deleteButtonText}>
+                        Delete
+                      </ThemedText>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -124,13 +143,13 @@ const styles = StyleSheet.create({
   header: {
     padding: 20,
     paddingBottom: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   title: {
     fontSize: 32,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   reloadButton: {
     paddingHorizontal: 20,
@@ -138,8 +157,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   reloadButtonText: {
-    color: '#fff',
-    fontWeight: '600',
+    color: "#fff",
+    fontWeight: "600",
     fontSize: 14,
   },
   scrollView: {
@@ -148,17 +167,17 @@ const styles = StyleSheet.create({
   },
   emptyState: {
     padding: 40,
-    alignItems: 'center',
+    alignItems: "center",
   },
   emptyText: {
     fontSize: 16,
     opacity: 0.6,
-    textAlign: 'center',
+    textAlign: "center",
   },
   listItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 16,
     marginBottom: 12,
     borderRadius: 12,
@@ -172,7 +191,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonGroup: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 8,
   },
   actionButton: {
@@ -180,28 +199,28 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 6,
     minWidth: 70,
-    alignItems: 'center',
+    alignItems: "center",
   },
   showButton: {
-    backgroundColor: '#0a7ea4',
+    backgroundColor: "#0a7ea4",
   },
   showButtonText: {
-    color: '#fff',
-    fontWeight: '600',
+    color: "#fff",
+    fontWeight: "600",
     fontSize: 14,
   },
   deleteButton: {
-    backgroundColor: '#dc3545',
+    backgroundColor: "#dc3545",
   },
   deleteButtonText: {
-    color: '#fff',
-    fontWeight: '600',
+    color: "#fff",
+    fontWeight: "600",
     fontSize: 14,
   },
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   loadingText: {
     marginTop: 12,

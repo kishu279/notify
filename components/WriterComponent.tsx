@@ -1,8 +1,8 @@
-import { TextInput, View, TouchableOpacity, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { ThemedText } from "./themed-text";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { ThemedText } from "./themed-text";
 
 interface Props {
   fileName: string;
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function WriterComponent(props: Props) {
-  const colorScheme = useColorScheme() ?? 'light';
+  const colorScheme = useColorScheme() ?? "light";
   const colors = Colors[colorScheme];
 
   return (
@@ -27,8 +27,8 @@ export default function WriterComponent(props: Props) {
             styles.titleInput,
             {
               color: colors.text,
-              borderColor: colorScheme === 'dark' ? '#444' : '#ddd',
-              backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f8f8f8',
+              borderColor: colorScheme === "dark" ? "#444" : "#ddd",
+              backgroundColor: colorScheme === "dark" ? "#1f1f1f" : "#f8f8f8",
             },
           ]}
           onChange={(e) => {
@@ -48,8 +48,8 @@ export default function WriterComponent(props: Props) {
             styles.contentInput,
             {
               color: colors.text,
-              borderColor: colorScheme === 'dark' ? '#444' : '#ddd',
-              backgroundColor: colorScheme === 'dark' ? '#1f1f1f' : '#f8f8f8',
+              borderColor: colorScheme === "dark" ? "#444" : "#ddd",
+              backgroundColor: colorScheme === "dark" ? "#1f1f1f" : "#f8f8f8",
             },
           ]}
           onChange={(e) => {
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 14,
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   contentContainer: {
     flex: 1,
@@ -103,18 +103,18 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     padding: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   saveButton: {
     paddingHorizontal: 40,
     paddingVertical: 14,
     borderRadius: 10,
     minWidth: 200,
-    alignItems: 'center',
+    alignItems: "center",
   },
   saveButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });

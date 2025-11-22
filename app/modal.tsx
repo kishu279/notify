@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
@@ -8,7 +8,7 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 
 export default function ModalScreen() {
   const router = useRouter();
-  const colorScheme = useColorScheme() ?? 'light';
+  const colorScheme = useColorScheme() ?? "light";
   const colors = Colors[colorScheme];
 
   return (
@@ -27,7 +27,7 @@ export default function ModalScreen() {
 
       <TouchableOpacity
         style={[styles.button, { backgroundColor: colors.tint }]}
-        onPress={() => router.replace('/')}
+        onPress={() => router.replace("/")}
       >
         <ThemedText style={styles.buttonText}>Get Started</ThemedText>
       </TouchableOpacity>

@@ -1,18 +1,18 @@
 import { ThemedText } from "@/components/themed-text";
 import WriterComponent from "@/components/WriterComponent";
+import { Colors } from "@/constants/theme";
+import { useColorScheme } from "@/hooks/use-color-scheme";
 import { createFile, readFile } from "@/service";
 import { useGlobalSearchParams } from "expo-router";
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Colors } from "@/constants/theme";
-import { useColorScheme } from "@/hooks/use-color-scheme";
 
 export default function Notes() {
   const [newFileName, setFileName] = React.useState<string>("");
   const [content, setContent] = React.useState<string>("default");
   const [fileNew, setFileNew] = React.useState<boolean>(true);
-  const colorScheme = useColorScheme() ?? 'light';
+  const colorScheme = useColorScheme() ?? "light";
   const colors = Colors[colorScheme];
 
   const { fileName } = useGlobalSearchParams<{
@@ -52,7 +52,9 @@ export default function Notes() {
   };
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
       <View style={styles.content}>
         <View style={styles.header}>
           <ThemedText type="title" style={styles.headerTitle}>
@@ -87,6 +89,6 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
