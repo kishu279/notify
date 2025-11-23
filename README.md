@@ -25,6 +25,7 @@ A simple and elegant note-taking application built with [Expo](https://expo.dev)
    ```
 
    This command starts the development server with:
+
    - `--clear`: Clears the bundler cache
    - `--tunnel`: Creates a tunnel for remote testing on physical devices
 

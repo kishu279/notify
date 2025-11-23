@@ -7,7 +7,7 @@ export type FileOperationResult<T = void> =
 
 export const fileLists = async (): Promise<FileOperationResult<string[]>> => {
   try {
-    const directory = new Directory(Paths.cache, "notify");
+    const directory = new Directory(Paths.document, "notify");
 
     if (!directory.exists) {
       directory.create();
@@ -33,7 +33,7 @@ export const createFile = async (
   content: string
 ): Promise<FileOperationResult> => {
   try {
-    const directory = new Directory(Paths.cache, "notify");
+    const directory = new Directory(Paths.document, "notify");
 
     if (!directory.exists) {
       directory.create();
@@ -64,7 +64,7 @@ export const readFile = async (
   title: string
 ): Promise<FileOperationResult<string>> => {
   try {
-    const directory = new Directory(Paths.cache, "notify");
+    const directory = new Directory(Paths.document, "notify");
 
     if (!directory.exists) {
       await directory.create();
@@ -97,7 +97,7 @@ export const updateFile = async (
   content: string
 ): Promise<FileOperationResult> => {
   try {
-    const directory = new FileSystem.Directory(Paths.cache, "notify");
+    const directory = new FileSystem.Directory(Paths.document, "notify");
     const fileName = new File(directory.uri, `${title}.txt`);
 
     if (!fileName.exists) {
@@ -121,7 +121,7 @@ export const updateFile = async (
 
 export const deleteFile = async (title: string) => {
   try {
-    const directory = new Directory(Paths.cache, "notify");
+    const directory = new Directory(Paths.document, "notify");
     const fileName = new File(directory, `${title}.txt`);
     // const fileName = new File(directory, "Vfbbb.txt.txt");
 

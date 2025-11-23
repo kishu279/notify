@@ -29,7 +29,7 @@ export default function ModalScreen() {
         style={[styles.button, { backgroundColor: colors.tint }]}
         onPress={() => router.replace("/")}
       >
-        <ThemedText style={styles.buttonText}>Get Started</ThemedText>
+      <ThemedText style={styles.buttonText}>Get Started</ThemedText>
       </TouchableOpacity>
     </ThemedView>
   );
@@ -46,11 +46,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     marginBottom: 30,
+    width: "100%",
   },
   title: {
     fontSize: 48,
     fontWeight: "bold",
-    marginBottom: 12,
+    textAlign: "center",
+    marginBottom: 24,
+    lineHeight: 100,
   },
   subtitle: {
     fontSize: 18,
